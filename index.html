@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>ІЛТА ЛЬВІВ — робоча панель</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --panel:#ffffff; --border:#e2e4e9; --text:#1c1f26; --muted:#6b7280;
+    --accent:#2457c9; --accent-soft:#eef2fd; --ok:#1a8a4c; --warn:#c9861a; --bad:#c92424;
+    --chip-bg:#eef0f4;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14161a; --panel:#1c1f26; --border:#2c3038; --text:#e8e9ec; --muted:#9aa0ab;
+      --accent:#6f9bff; --accent-soft:#1c2740; --ok:#3fcf7f; --warn:#e0a941; --bad:#f26a6a;
+      --chip-bg:#242832;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:0 0 60px; background:var(--bg); color:var(--text);
+    font-family:"Segoe UI", -apple-system, Roboto, Arial, sans-serif; line-height:1.5;
+  }
+  header{padding:32px 24px 20px; max-width:1100px; margin:0 auto;}
+  header h1{margin:0 0 6px; font-size:26px;}
+  header p{margin:0; color:var(--muted); font-size:14px;}
+
+  .tabs{
+    max-width:1100px; margin:20px auto 0; padding:0 24px;
+    display:flex; gap:8px; flex-wrap:wrap; position:sticky; top:0; background:var(--bg);
+    padding-top:10px; padding-bottom:10px; z-index:10; border-bottom:1px solid var(--border);
+  }
+  .tab-btn{
+    font-size:14px; font-weight:600; color:var(--muted); background:transparent;
+    padding:8px 16px; border-radius:20px; border:1px solid var(--border); cursor:pointer;
+  }
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+
+  main{max-width:1100px; margin:0 auto; padding:0 24px;}
+  .tab-panel{display:none; margin-top:28px;}
+  .tab-panel.active{display:block;}
+
+  section{margin-top:0;}
+  h2{
+    font-size:18px; margin:0 0 14px; padding-bottom:8px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:20px;}
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th, td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.03em;}
+  tr:last-child td{border-bottom:none;}
+  a{color:var(--accent);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px;}
+  .card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:10px;}
+  .card h3{margin:0; font-size:16px; display:flex; align-items:center; gap:8px;}
+  .card .dot{width:10px; height:10px; border-radius:50%; display:inline-block;}
+  .card .meta{font-size:13px; color:var(--muted); margin:0;}
+  .links{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;}
+  .chip{font-size:12px; padding:4px 10px; border-radius:16px; background:var(--chip-bg); color:var(--text); text-decoration:none; border:1px solid var(--border);}
+  .chip.missing{color:var(--muted); font-style:italic; border-style:dashed;}
+  .status{display:inline-block; padding:2px 9px; border-radius:12px; font-size:12px; font-weight:600;}
+  .status.ok{background:rgba(26,138,76,.13); color:var(--ok);}
+  .status.warn{background:rgba(201,134,26,.15); color:var(--warn);}
+  .status.bad{background:rgba(201,36,36,.13); color:var(--bad);}
+  .muted{color:var(--muted);}
+  code{background:var(--chip-bg); padding:1px 6px; border-radius:4px; font-size:13px;}
+  ul.tight{margin:6px 0 0; padding-left:18px;}
+  ul.tight li{margin-bottom:4px; font-size:14px;}
+  footer{max-width:1100px; margin:40px auto 0; padding:0 24px; color:var(--muted); font-size:12px;}
+  .price-updated{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    background:var(--accent-soft); border:1px solid var(--border); border-radius:10px;
+    padding:10px 16px; margin-bottom:18px; font-size:13px;
+  }
+  .price-updated b{color:var(--text);}
+  .brand-price-table th:last-child, .brand-price-table td:last-child{text-align:right; font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ІЛТА ЛЬВІВ — робоча панель</h1>
+  <p>Офіційний дилер Peugeot · Citroën · Opel · Jeep · DS Automobiles у Львові &nbsp;·&nbsp; оновлено 13.08.2026</p>
+</header>
+
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="company">🏢 Компанія</button>
+  <button class="tab-btn" data-tab="brands">🚗 Бренди</button>
+  <button class="tab-btn" data-tab="social">📱 Соцмережі</button>
+  <button class="tab-btn" data-tab="prices">💰 Прайси</button>
+  <button class="tab-btn" data-tab="ads">🎯 Google Ads</button>
+  <button class="tab-btn" data-tab="notes">📝 Нотатки</button>
+</div>
+
+<main>
+
+  <!-- КОМПАНІЯ -->
+  <div class="tab-panel active" id="tab-company">
+    <section>
+      <h2>Компанія</h2>
+      <div class="panel">
+        <table>
+          <tr><th>Юрособа</th><td>ТзОВ «Ілта Львів»</td></tr>
+          <tr><th>ЄДРПОУ</th><td>20797696</td></tr>
+          <tr><th>На ринку з</th><td>1993–1994 р. (30+ років, офіційний дилер Peugeot)</td></tr>
+          <tr><th>Директор</th><td>Ярема Павло Данилович</td></tr>
+          <tr><th>Адреса шоурумів</th><td>м. Львів, вул. Городоцька, 288 (комплекс «Peugeot Blue Box», формат 3S: продаж / сервіс / запчастини) — <a href="https://www.google.com/maps/dir//49.8228816,23.919991" target="_blank">Google Maps</a></td></tr>
+          <tr><th>Юридична адреса</th><td>79040, м. Львів, вул. Збиральна, 2А</td></tr>
+        </table>
+        <p class="muted" style="margin-top:12px; font-size:13px;">
+          ⚠️ <b>Не плутати:</b> «Ілта на Печерську» в Києві (ilta.ua, jeep.ilta.ua) — окрема непов'язана компанія. Її ресурси ігноруються повністю.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- БРЕНДИ -->
+  <div class="tab-panel" id="tab-brands">
+    <section>
+      <h2>Бренди — сайти та контакти</h2>
+      <div class="grid">
+
+        <div class="card">
+          <h3><span class="dot" style="background:#2457c9"></span>Peugeot</h3>
+          <p class="meta">Дилер з 1993 р. · Пн–Пт 09–18, Сб 09–15</p>
+          <div>Салон: <code>(032) 229-51-61</code><br>Сервіс: <code>(032) 229-51-91</code></div>
+          <div class="links">
+            <a class="chip" href="https://peugeot-lviv.com/" target="_blank">🌐 Сайт</a>
+            <a class="chip" href="https://www.instagram.com/peugeot_iltalviv/" target="_blank">📷 Instagram (~1288)</a>
+            <span class="chip missing">Facebook — уточнити URL</span>
+            <span class="chip missing">YouTube — уточнити URL</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:#c92424"></span>Citroën</h3>
+          <p class="meta">Дилер з 2006 р. · Пн–Пт 09–18, Сб 09–15</p>
+          <div>Продаж/сервіс: <code>(032) 229-59-79</code></div>
+          <div class="links">
+            <a class="chip" href="https://citroen.lviv.ua/" target="_blank">🌐 Сайт</a>
+            <a class="chip" href="https://www.instagram.com/citroen_iltalviv/" target="_blank">📷 Instagram (~906)</a>
+            <a class="chip" href="https://facebook.com/citroen.ua" target="_blank">👍 Facebook</a>
+            <a class="chip" href="https://youtube.com/channel/UCjZmyhQDaHyqBWybLz5Zk-g" target="_blank">▶️ YouTube</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:#1c1f26"></span>Opel</h3>
+          <p class="meta">Відкритий у травні 2019 р.</p>
+          <div>Тел: <code>(032) 229-55-30</code></div>
+          <div class="links">
+            <a class="chip" href="https://opel-lviv.com.ua/" target="_blank">🌐 Сайт</a>
+            <a class="chip" href="https://www.instagram.com/opel_iltalviv/" target="_blank">📷 Instagram (~675)</a>
+            <a class="chip" href="https://www.facebook.com/profile.php?id=61553621446294" target="_blank">👍 Facebook</a>
+            <span class="chip missing">YouTube — немає</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:#1a8a4c"></span>Jeep</h3>
+          <p class="meta">Відкритий 07.12.2023 · Пн–Пт 09–18, Сб 09–15</p>
+          <div>Тел: <code>+38 (032) 229-5579</code></div>
+          <div class="links">
+            <a class="chip" href="https://jeep-lviv.com/" target="_blank">🌐 Сайт</a>
+            <a class="chip" href="https://www.instagram.com/jeep_iltalviv" target="_blank">📷 Instagram</a>
+            <a class="chip" href="https://facebook.com/61553436562987" target="_blank">👍 Facebook</a>
+            <a class="chip" href="https://youtube.com/channel/UCGLsqWmD15hU0wfeChy38QQ" target="_blank">▶️ YouTube</a>
+          </div>
+          <p class="meta">Моделі: Avenger, Compass, Grand Cherokee, Wrangler</p>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:#c9861a"></span>DS Automobiles</h3>
+          <p class="meta">DS Salon Львів · з 12.09.2019</p>
+          <div>Продаж: <code>(032) 229-5540</code><br>Сервіс: <code>(067) 471-2385</code></div>
+          <div class="links">
+            <a class="chip" href="https://dsautomobiles.lviv.ua/" target="_blank">🌐 Сайт</a>
+            <a class="chip" href="https://store.dsautomobiles.ua/" target="_blank">🛒 Онлайн-магазин</a>
+            <a class="chip" href="https://www.instagram.com/ds_salon_lviv" target="_blank">📷 Instagram</a>
+            <span class="chip missing">Facebook: DSsalonLviv (URL уточнити)</span>
+            <span class="chip missing">YouTube — немає</span>
+          </div>
+          <p class="meta">Моделі: DS 4, DS N°4 (гібрид), DS 7</p>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- СОЦМЕРЕЖІ -->
+  <div class="tab-panel" id="tab-social">
+    <section>
+      <h2>Соцмережі — зведена таблиця</h2>
+      <div class="panel">
+        <table>
+          <tr><th>Бренд</th><th>Instagram</th><th>Facebook</th><th>YouTube</th><th>TikTok</th></tr>
+          <tr>
+            <td>Peugeot</td>
+            <td><a href="https://www.instagram.com/peugeot_iltalviv/" target="_blank">@peugeot_iltalviv</a></td>
+            <td class="muted">є, URL не підтверджено</td>
+            <td class="muted">є, URL не підтверджено</td>
+            <td><span class="status bad">немає</span></td>
+          </tr>
+          <tr>
+            <td>Citroën</td>
+            <td><a href="https://www.instagram.com/citroen_iltalviv/" target="_blank">@citroen_iltalviv</a></td>
+            <td><a href="https://facebook.com/citroen.ua" target="_blank">citroen.ua</a></td>
+            <td><a href="https://youtube.com/channel/UCjZmyhQDaHyqBWybLz5Zk-g" target="_blank">канал</a></td>
+            <td><span class="status bad">немає</span></td>
+          </tr>
+          <tr>
+            <td>Opel</td>
+            <td><a href="https://www.instagram.com/opel_iltalviv/" target="_blank">@opel_iltalviv</a></td>
+            <td><a href="https://www.facebook.com/profile.php?id=61553621446294" target="_blank">профіль</a></td>
+            <td><span class="status bad">немає</span></td>
+            <td><span class="status bad">немає</span></td>
+          </tr>
+          <tr>
+            <td>Jeep</td>
+            <td><a href="https://www.instagram.com/jeep_iltalviv" target="_blank">@jeep_iltalviv</a></td>
+            <td><a href="https://facebook.com/61553436562987" target="_blank">профіль</a></td>
+            <td><a href="https://youtube.com/channel/UCGLsqWmD15hU0wfeChy38QQ" target="_blank">канал</a></td>
+            <td><span class="status bad">немає</span></td>
+          </tr>
+          <tr>
+            <td>DS</td>
+            <td><a href="https://www.instagram.com/ds_salon_lviv" target="_blank">ds_salon_lviv</a></td>
+            <td class="muted">DSsalonLviv</td>
+            <td><span class="status bad">немає</span></td>
+            <td><span class="status bad">немає</span></td>
+          </tr>
+        </table>
+        <p class="meta" style="margin-top:10px;">Найсильніший акаунт — Peugeot Instagram (~1288). YouTube ведеться лише у Citroën і Jeep. TikTok відсутній у всіх брендів — вакантний канал.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ПРАЙСИ -->
+  <div class="tab-panel" id="tab-prices">
+    <section>
+      <h2>Прайси на нові автомобілі</h2>
+      <div class="price-updated">
+        <span>📅 Останнє оновлення цін: <b>13.08.2026</b> (джерело — офіційні сайти брендів)</span>
+        <span>🔁 Наступна актуалізація: <b>до 13.09.2026</b> — оновлюється щомісяця</span>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;">🔵 Peugeot</h3>
+        <table class="brand-price-table">
+          <tr><th>Модель</th><th>Ціна від, ₴</th></tr>
+          <tr><td>2008</td><td>1 155 000</td></tr>
+          <tr><td>408</td><td>1 304 100</td></tr>
+          <tr><td>3008</td><td>1 350 400</td></tr>
+          <tr><td>e-3008</td><td>2 437 700</td></tr>
+          <tr><td>5008</td><td>1 695 000</td></tr>
+          <tr><td>e-5008 4×4</td><td>2 555 300</td></tr>
+          <tr><td>Landtrek «Лютий»</td><td>1 338 000</td></tr>
+          <tr><td>Landtrek</td><td>1 630 100</td></tr>
+          <tr><td>Rifter</td><td>1 031 800</td></tr>
+          <tr><td>Traveller</td><td>2 049 800</td></tr>
+          <tr><td>Partner</td><td>1 007 200</td></tr>
+          <tr><td>Expert</td><td>1 425 500</td></tr>
+          <tr><td>Boxer</td><td>1 511 000</td></tr>
+        </table>
+        <p class="meta" style="margin-top:8px;">Джерело: <a href="https://peugeot-lviv.com/range.html" target="_blank">peugeot-lviv.com/range.html</a></p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;">🔴 Citroën</h3>
+        <table class="brand-price-table">
+          <tr><th>Модель</th><th>Ціна від, ₴</th></tr>
+          <tr><td>Ami</td><td>460 900</td></tr>
+          <tr><td>C3</td><td>818 000</td></tr>
+          <tr><td>C3 Aircross</td><td>926 000</td></tr>
+          <tr><td>C-Elysée</td><td>743 500</td></tr>
+          <tr><td>C4</td><td>1 095 300</td></tr>
+          <tr><td>C5 Aircross</td><td>1 277 100</td></tr>
+          <tr><td>New C5 Aircross</td><td>1 439 900</td></tr>
+          <tr><td>Berlingo (пасажирський)</td><td>1 000 500</td></tr>
+          <tr><td>SpaceTourer</td><td>1 995 300</td></tr>
+          <tr><td>Berlingo Van</td><td>1 036 800</td></tr>
+          <tr><td>Jumpy</td><td>1 425 500</td></tr>
+          <tr><td>New Jumper</td><td>1 525 800</td></tr>
+        </table>
+        <p class="meta" style="margin-top:8px;">Джерело: <a href="https://citroen.lviv.ua/" target="_blank">citroen.lviv.ua</a></p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;">⚫ Opel</h3>
+        <table class="brand-price-table">
+          <tr><th>Модель</th><th>Ціна від, ₴</th></tr>
+          <tr><td>Combo</td><td>1 032 900</td></tr>
+          <tr><td>Frontera</td><td>1 108 000</td></tr>
+          <tr><td>Mokka</td><td>1 129 200</td></tr>
+          <tr><td>Grandland</td><td>1 371 000</td></tr>
+          <tr><td>Zafira</td><td>2 004 400</td></tr>
+          <tr><td>Combo Cargo</td><td>1 007 200</td></tr>
+          <tr><td>Vivaro</td><td>1 475 000</td></tr>
+          <tr><td>Movano</td><td>1 550 800</td></tr>
+        </table>
+        <p class="meta" style="margin-top:8px;">Джерело: <a href="https://opel-lviv.com.ua/" target="_blank">opel-lviv.com.ua</a></p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;">🟢 Jeep</h3>
+        <table class="brand-price-table">
+          <tr><th>Модель</th><th>Ціна від, ₴</th></tr>
+          <tr><td>Avenger</td><td>1 218 500</td></tr>
+          <tr><td>Avenger 4xe The North Face</td><td>1 537 100</td></tr>
+          <tr><td>Compass</td><td>1 525 600</td></tr>
+          <tr><td>New Compass e-Hybrid</td><td>1 587 000</td></tr>
+          <tr><td>Grand Cherokee</td><td>2 730 800</td></tr>
+          <tr><td>Wrangler</td><td>3 191 000</td></tr>
+        </table>
+        <p class="meta" style="margin-top:8px;">Джерело: <a href="https://jeep-lviv.com/" target="_blank">jeep-lviv.com</a></p>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0;">🟡 DS Automobiles</h3>
+        <table class="brand-price-table">
+          <tr><th>Модель</th><th>Ціна від, ₴</th></tr>
+          <tr><td>DS 4</td><td>1 339 500 <span class="status warn">спецціна</span></td></tr>
+          <tr><td>DS N°4 (гібрид)</td><td class="muted">за запитом</td></tr>
+          <tr><td>DS 7 (вкл. Jules Verne)</td><td class="muted">≈ 45 200 $ — уточнити в ₴</td></tr>
+        </table>
+        <p class="meta" style="margin-top:8px;">
+          Точні прайси на сайті не публікуються відкрито — доступні через розділ «Ціни та ТТХ» (завантаження) на
+          <a href="https://dsautomobiles.lviv.ua/" target="_blank">dsautomobiles.lviv.ua</a> або за запитом у салоні.
+        </p>
+      </div>
+
+      <p class="meta">⚠️ Всі ціни — стартові («від»), можуть відрізнятись залежно від комплектації, курсу та поточних акцій. Актуалізувати щомісяця.</p>
+    </section>
+  </div>
+
+  <!-- GOOGLE ADS -->
+  <div class="tab-panel" id="tab-ads">
+    <section>
+      <h2>Google Ads (робоча зона)</h2>
+      <div class="panel">
+        <table>
+          <tr><th>Бренд</th><th>Домен</th><th>Ads Transparency</th><th>Статус кампаній</th><th>Матеріали</th></tr>
+          <tr>
+            <td>Peugeot</td><td><code>peugeot-lviv.com</code></td>
+            <td><a href="https://adstransparency.google.com/?domain=peugeot-lviv.com&region=UA" target="_blank">перевірити</a></td>
+            <td><span class="status warn">не перевірено</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>Citroën</td><td><code>citroen.lviv.ua</code></td>
+            <td><a href="https://adstransparency.google.com/?domain=citroen.lviv.ua&region=UA" target="_blank">перевірити</a></td>
+            <td><span class="status ok">є заготовка ключів</span></td>
+            <td><a href="./citroen_google_ads_keywords.txt" target="_blank">citroen_google_ads_keywords.txt</a> (78 ключових фраз)</td>
+          </tr>
+          <tr>
+            <td>Opel</td><td><code>opel-lviv.com.ua</code></td>
+            <td><a href="https://adstransparency.google.com/?domain=opel-lviv.com.ua&region=UA" target="_blank">перевірити</a></td>
+            <td><span class="status warn">не перевірено</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>Jeep</td><td><code>jeep-lviv.com</code></td>
+            <td><a href="https://adstransparency.google.com/?domain=jeep-lviv.com&region=UA" target="_blank">перевірити</a></td>
+            <td><span class="status warn">не перевірено</span></td>
+            <td class="muted">—</td>
+          </tr>
+          <tr>
+            <td>DS</td><td><code>dsautomobiles.lviv.ua</code></td>
+            <td><a href="https://adstransparency.google.com/?domain=dsautomobiles.lviv.ua&region=UA" target="_blank">перевірити</a></td>
+            <td><span class="status warn">не перевірено</span></td>
+            <td class="muted">—</td>
+          </tr>
+        </table>
+        <p class="meta" style="margin-top:12px;">
+          Google Ads Transparency Center показує лише активні/недавні оголошення й потребує ручного перегляду в браузері (не парситься автоматично). Наступний крок по кожному бренду: (1) перевірити транспарентність, (2) перевірити видачу за комерційними запитами, (3) підготувати список ключових слів за прикладом Citroën.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- НОТАТКИ -->
+  <div class="tab-panel" id="tab-notes">
+    <section>
+      <h2>Нотатки / TODO</h2>
+      <div class="panel">
+        <ul class="tight">
+          <li>Уточнити прямі URL Facebook і YouTube для Peugeot</li>
+          <li>Уточнити прямий URL Facebook-сторінки DS (DSsalonLviv)</li>
+          <li>Ручна перевірка Google Ads Transparency Center по кожному домену</li>
+          <li>Перевірити Meta Ads Library (facebook.com/ads/library) для кожного бренду</li>
+          <li>Підготувати ключові слова для Google Ads по Peugeot, Opel, Jeep, DS (за прикладом Citroën)</li>
+          <li>Знайти контактну особу з маркетингу / особу, що приймає рішення щодо реклами</li>
+          <li>Уточнити точні прайси DS N°4 та DS 7 в ₴ (наразі частково за запитом)</li>
+          <li>YouTube і TikTok відсутні у частини брендів — потенційна точка росту для контенту</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  Повна детальна база (юрособа, реєстри, джерела) — <code>ILTA_LVIV/company_database.md</code> у проекті Scribe YouTube. Вкладка «Прайси» актуалізується щомісяця.
+</footer>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
